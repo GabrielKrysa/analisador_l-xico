@@ -1,4 +1,7 @@
 <?php
+#by: Krysa
+#09/03/2020
+
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 function procura_simbolos($srt)
@@ -9,6 +12,10 @@ function procura_simbolos($srt)
         if ($letra == "+") {
             $tokens["operadores"][] = $letra;
         } else if ($letra == "*") {
+            $tokens["operadores"][] = $letra;
+        } else if ($letra == "-") {
+            $tokens["operadores"][] = $letra;
+        } else if ($letra == "/") {
             $tokens["operadores"][] = $letra;
         } else if ($letra == "(" || $letra == ")") {
             $tokens["parenteses"][] = $letra;
@@ -52,7 +59,32 @@ function procura_numero($str)
     return $tokens;
 }
 
-$str = "(15 * 54.9) + 9 + 45 / 12.56";
+function procura_erro($tokens, $str)
+{
+    foreach ($tokens as $categories) {
+        foreach ($categories as $row) {
+            foreach ($row as $element) {
+                $all[] = $element;
+            }
+        }
+    }
+
+    foreach ($all as $x) {
+        $string .= $x . " ";
+    }
+
+    foreach (str_split($str) as $compare) {
+        if (!in_array($compare, str_split($string))) {
+            $errors["erros"][] = $compare;
+        }
+    }
+
+    return $errors;
+}
+
+$str = "(15 * 54.9) + 890 9 + 45 / 12.56";
 $tokens["numeros"] = procura_numero($str);
 $tokens["simbolos"] = procura_simbolos($str);
-echo json_encode($tokens);
+$errors = procura_erro($tokens, $str);
+
+echo json_encode([$tokens, $errors == null ? ["erros" => null] : $errors]);
