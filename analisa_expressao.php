@@ -82,7 +82,7 @@ function procura_erro($tokens, $str)
     return $errors;
 }
 
-$str = "(15 * 54.9) + 890 9 + 45 / 12.56";
+$str = "(15 * 54.9) + 890 9 aksjdlkas + 45 / 12.56";
 $tokens["numeros"] = procura_numero($str);
 $tokens["simbolos"] = procura_simbolos($str);
 $errors = procura_erro($tokens, $str);
